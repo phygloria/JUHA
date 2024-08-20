@@ -24,6 +24,16 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Bean Validation API
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+
+    // Hibernate Validator (Bean Validation의 구현체)
+    implementation 'org.hibernate.validator:hibernate-validator:7.0.0.Final'
+
+    // Optional: EL (Expression Language) dependency for Hibernate Validator
+    implementation 'org.glassfish:javax.el:3.0.0'
+
 }
 
 tasks.named('test') {
