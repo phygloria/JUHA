@@ -3,7 +3,10 @@ package com.ohgiraffers.juhada.user.service;
 import com.ohgiraffers.juhada.user.repository.UserRepository;
 import com.ohgiraffers.juhada.user.usermodel.UserDTO;
 import com.ohgiraffers.juhada.user.usermodel.UserEntity;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,45 +14,36 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public UserDTO registerUser(UserDTO userDTO) {
-        // 나이 검증
-        if (userDTO.getAge() < 20) {
-            return new UserDTO.Builder()
-                    .userName(userDTO.getUserName())
-                    .password(userDTO.getPassword())
-                    .email(userDTO.getEmail())
-                    .age(userDTO.getAge())
-                    .gender(userDTO.getGender())
-                    .phoneNo(userDTO.getPhoneNo())
-                    .addressNo(userDTO.getAddressNo())
-                    .addressBasic(userDTO.getAddressBasic())
-                    .addressDetail(userDTO.getAddressDetail())
-                    .errorMessage("가입 불가: 나이가 20세 미만입니다.")
-                    .build();
-        }
+//
+//    public boolean isUserIdAvailable(Integer userNo) {
+//        return !userRepository.existsByUserId(userNo);
+//    }
 
-        // 이름 검증 (한글 3자 이상)
-        if (userDTO.getUserName() == null || !userDTO.getUserName().matches("^[가-힣]{3,}$")) {
-            return new UserDTO.Builder()
-                    .userName(userDTO.getUserName())
-                    .password(userDTO.getPassword())
-                    .email(userDTO.getEmail())
-                    .age(userDTO.getAge())
-                    .gender(userDTO.getGender())
-                    .phoneNo(userDTO.getPhoneNo())
-                    .addressNo(userDTO.getAddressNo())
-                    .addressBasic(userDTO.getAddressBasic())
-                    .addressDetail(userDTO.getAddressDetail())
-                    .errorMessage("이름은 한글로 3자 이상 입력해 주세요.")
-                    .build();
-        }
+    @Transactional
+    public UserEntity registerUser(UserDTO userDTO) {
 
-        // UserDTO를 UserEntity로 변환
-        UserEntity userEntity = new UserEntity.Builder()
+//        // ID 중복 체크
+//        if (userDTO.getUserNo() == null || userDTO.getUserNo() = ) {
+//            return ResponseEntity.badRequest()
+//                    .body("Id가 없거나 ");
+//        }
+
+//        // 3. 이메일 중복 체크
+//        if (userRepository.existsByEmail(userDTO.getEmail())) {
+//            throw new DuplicateEmailException("이미 등록된 이메일입니다.");
+//        }
+
+        // 4. 비밀번호 암호화
+        String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+
+        // 5. UserEntity 생성
+        UserEntity newUser = new UserEntity.UserEntityBuilder()
                 .userName(userDTO.getUserName())
-                .password(userDTO.getPassword())
                 .email(userDTO.getEmail())
+                .password(encodedPassword)
                 .age(userDTO.getAge())
                 .gender(userDTO.getGender())
                 .phoneNo(userDTO.getPhoneNo())
@@ -58,22 +52,14 @@ public class UserService {
                 .addressDetail(userDTO.getAddressDetail())
                 .build();
 
-        // UserEntity를 데이터베이스에 저장
-        UserEntity savedUser = userRepository.save(userEntity);
+        // 6. 사용자 저장
+        UserEntity savedUser = userRepository.save(newUser);
 
-        // 저장된 UserEntity를 UserDTO로 변환하여 반환
-        return new UserDTO.Builder()
-                .userNo(savedUser.getUserNo())
-                .userName(savedUser.getUserName())
-                .password(savedUser.getPassword())
-                .email(savedUser.getEmail())
-                .age(savedUser.getAge())
-                .gender(savedUser.getGender())
-                .phoneNo(savedUser.getPhoneNo())
-                .addressNo(savedUser.getAddressNo())
-                .addressBasic(savedUser.getAddressBasic())
-                .addressDetail(savedUser.getAddressDetail())
-                .build();
+
+        return savedUser;
     }
 
 }
+
+
+
