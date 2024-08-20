@@ -62,6 +62,20 @@ public class UserEntity {
 
     }
 
+    // Getter 메서드들
+    public int getUserNo() { return userNo; }
+    public String getUserName() { return userName; }
+    public String getPassword() { return password; }
+    public String getEmail() { return email; }
+    public int getAge() { return age; }
+    public String getGender() { return gender; }
+    public String getPhoneNo() { return phoneNo; }
+    public String getAddressNo() { return addressNo; }
+    public String getAddressBasic() { return addressBasic; }
+    public String getAddressDetail() { return addressDetail; }
+
+
+
     public static class UserEntityBuilder {
         private int userNo;
         private String userName;
@@ -73,6 +87,7 @@ public class UserEntity {
         private String addressNo;
         private String addressBasic;
         private String addressDetail;
+
 
         public UserEntityBuilder userName(String userName) {
             this.userName = userName;
