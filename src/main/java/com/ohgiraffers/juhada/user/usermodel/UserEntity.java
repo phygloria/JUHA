@@ -1,40 +1,48 @@
 package com.ohgiraffers.juhada.user.usermodel;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 @Entity
+@Table(name = "juhada-user")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_no")
     private int userNo;
 
     @NotBlank(message = "사용자 이름은 필수 입력 사항입니다.")
+    @Column(name = "user_name")
     private String userName;
 
     @NotBlank(message = "비밀번호는 필수 입력 사항입니다.")
     @Size(min = 6, message = "비밀번호는 최소 6자 이상이어야 합니다.")
+    @Column(name = "password")
     private String password;
 
     @NotBlank(message = "이메일은 필수 입력 사항입니다.")
     @Email(message = "유효한 이메일 주소를 입력하세요.")
+    @Column(name = "email")
     private String email;
     @Min(value = 20, message = "나이는 20세 이상이어야 합니다.")
+    @Column(name = "age")
     private int age;
+    @Column(name = "gender")
     private String gender;
+    @Column(name = "phone_no")
     private String phoneNo;
 
     @NotBlank(message = "우편번호는 필수 입력 사항입니다.")
     @Size(min = 6, message = "우편번호는 최소 6자 이상이어야 합니다.")
+    @Column(name = "address_no")
     private String addressNo;
+    @Column(name = "address_basic")
     private String addressBasic;
+    @Column(name = "address_detail")
     private String addressDetail;
 
     public UserEntity() {
