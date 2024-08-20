@@ -3,20 +3,31 @@ package com.ohgiraffers.juhada.user.controller;
 import com.ohgiraffers.juhada.user.service.UserService;
 import com.ohgiraffers.juhada.user.usermodel.UserDTO;
 import com.ohgiraffers.juhada.user.usermodel.UserEntity;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
 public class UserController {
 
-    @Autowired
     private UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+
+    }
 
 
     @PostMapping("/register")
@@ -43,6 +54,48 @@ public class UserController {
         return ResponseEntity.ok("사용자가 성공적으로 등록되었습니다.");
     }
 
+        // 전체조회
+        @GetMapping
+        public ResponseEntity<List<UserDTO>> getAllUsers() {
+            List<UserDTO> users = userService.getAllUsers();
+            return ResponseEntity.ok(users);
+        }
+
+        // 상세조회
+        @GetMapping
+        public ResponseEntity<UserEntity> getUserByNo(@PathVariable Integer userNo) {
+            UserEntity user = userService.getUserByNo(userNo);
+            return ResponseEntity.ok(user);
+        }
+
+        // 수정
+
+        @PutMapping
+        public ResponseEntity<?> updateUser(@PathVariable Integer userNo,
+                                            @Valid @RequestBody UserDTO userDTO,
+                                            BindingResult bindingResult) {
+//            if (bindingResult.hasErrors()) {
+//                List<String> errors = bindingResult.getAllErrors().stream()
+//                        .map(ObjectError::getDefaultMessage)
+//                        .collect(Collectors.toList());
+//                return ResponseEntity.badRequest().body(errors);
+//            }
+            try {
+                UserDTO updatedUser = userService.updateUser(userNo, userDTO);
+                return ResponseEntity.ok(updatedUser);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        }
 
 
-}
+        // 삭제
+
+        @DeleteMapping("/{userNo}")
+        public ResponseEntity<Void> deleteUser(@PathVariable Integer userNo) {
+            userService.deleteUser(userNo);
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+

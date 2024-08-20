@@ -13,7 +13,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_no")
-    private int userNo;
+    private Integer userNo;
 
     @NotBlank(message = "사용자 이름은 필수 입력 사항입니다.")
     @Column(name = "user_name")
@@ -63,7 +63,7 @@ public class UserEntity {
     }
 
     // Getter 메서드들
-    public int getUserNo() { return userNo; }
+    public Integer getUserNo() { return userNo; }
     public String getUserName() { return userName; }
     public String getPassword() { return password; }
     public String getEmail() { return email; }
@@ -77,7 +77,7 @@ public class UserEntity {
 
 
     public static class UserEntityBuilder {
-        private int userNo;
+        private Integer userNo;
         private String userName;
         private String password;
         private String email;
@@ -88,6 +88,11 @@ public class UserEntity {
         private String addressBasic;
         private String addressDetail;
 
+
+        public UserEntityBuilder userNo(Integer userNo) {
+            this.userNo = userNo;
+            return this;
+        }
 
         public UserEntityBuilder userName(String userName) {
             this.userName = userName;
