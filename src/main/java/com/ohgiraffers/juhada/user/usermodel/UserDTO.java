@@ -2,7 +2,7 @@ package com.ohgiraffers.juhada.user.usermodel;
 
 public class UserDTO {
 
-    private int userNo;
+    private Integer userNo;
     private String userName;
     private String password;
     private String email;
@@ -16,7 +16,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(int userNo, String userName, String password, String email, int age, String gender, String phoneNo, String addressNo, String addressBasic, String addressDetail) {
+    public UserDTO(Integer userNo, String userName, String password, String email, int age, String gender, String phoneNo, String addressNo, String addressBasic, String addressDetail) {
         this.userNo = userNo;
         this.userName = userName;
         this.password = password;
@@ -31,7 +31,7 @@ public class UserDTO {
 
     // getter
 
-    public int getUserNo() {
+    public Integer getUserNo() {
         return userNo;
     }
 
@@ -71,10 +71,8 @@ public class UserDTO {
         return addressDetail;
     }
 
+
 }
-
-
-
 
 //회원가입한다.
 //회원번호
