@@ -22,8 +22,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class UserController {
 
-
-
     private UserService userService;
 
     public UserController(UserService userService) {
@@ -51,6 +49,8 @@ public class UserController {
 
         // 등록 코드
             userService.registerUser(userDTO);
+
+
         return ResponseEntity.ok("사용자가 성공적으로 등록되었습니다.");
     }
 
@@ -99,4 +99,3 @@ public class UserController {
     }
 
 
-    
